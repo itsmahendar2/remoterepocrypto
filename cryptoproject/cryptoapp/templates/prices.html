@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+    {% if msg %}
+        <div class="jumbotron">
+        <!--
+            <h1 style="color: red;">OOPS!! {{ msg }}</h1>
+             <span> <h4>Please Enter BTC,ETH,XRP,LTC,XLM,TRX,ADA etc...</h4></span>-->
+            <h4 class="text-danger">Enter a Crypto to Search</h4><br>
+        <form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'prices' %}">
+        {% csrf_token %}
+      <input class="form-control mr-sm-2" name="quote" type="search" placeholder="Ex : BTC" aria-label="Search">
+      <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+    </form>
+        </div>
+
+    {% else %}
+        {% if crypto.Response %}
+
+            <div class="jumbotron">
+            <h1 style="color:red;">{{ quote }} Not Found in CryptoCurrencies List</h1><br>
+        <form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'prices' %}">
+        {% csrf_token %}
+                        <span> <h4>Please Enter BTC,ETH,XRP,LTC,XLM,TRX,ADA etc...</h4></span>
+
+      <input class="form-control mr-sm-2" name="quote" type="search" placeholder="Ex : BTC" aria-label="Search">
+      <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+    </form>
+            {% else %}
+    <div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Current {{ quote }} Vlaues</h1>
+      <table class="table table-bordered table-striped table-hover" border="10">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Marketcap</th>
+      <th scope="col">Price</th>
+      <th scope="col">24Hr Volume</th>
+      <th scope="col">24hr Change</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for keys,values in crypto.DISPLAY.items %}
+    <tr>
+      <th scope="row">{{ keys }}</th>
+      <td>{{ values.INR.MKTCAP }}</td>
+      <td>{{ values.INR.PRICE }}</td>
+      <td>{{ values.INR.TOTALVOLUME24H }}</td>
+      <td>({{ values.INR.CHANGEPCT24HOUR }}%)</td>
+    </tr>
+  </tbody>
+    {% endfor %}
+</table>
+  <center>
+  <form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'prices' %}">
+        {% csrf_token %}
+      <h3> Search for more Cryptos &emsp;</h3>
+      <input class="form-control mr-sm-2" name="quote" type="search" placeholder="Ex : BTC" aria-label="Search">
+      <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+    </form>
+      </center>
+  </div>
+</div>
+    {% endif %}
+    {% endif %}
+
+
+{% endblock %}

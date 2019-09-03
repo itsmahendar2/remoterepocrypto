@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .card:hover{transform: scale(1.1);
+                transition-duration: 1s}
+    </style>
+
+    <table class="table table-bordered table-striped table-hover">
+  <thead>
+    <tr class="text-white bg-danger">
+      <th scope="col"st>Name</th>
+      <th scope="col">Marketcap</th>
+      <th scope="col">Price</th>
+      <th scope="col">24hr Change</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for keys,values in price.DISPLAY.items %}
+    <tr>
+      <th scope="row" class="text-danger">{{ keys }}</th>
+      <td>{{ values.INR.MKTCAP }}</td>
+      <td>{{ values.INR.PRICE }}</td>
+      <td>({{ values.INR.CHANGEPCT24HOUR }}%)</td>
+    </tr>
+  </tbody>
+    {% endfor %}
+</table>
+
+
+
+    <div class="container">
+
+    <div class="row">
+        {% for i in api.Data %}
+    <div class="card" style="width: 15rem;margin: 12px 18px;">
+  <a href="{{ i.url }}"><img class="card-img-top" src="{{ i.imageurl }}" alt="{{ i.tags }}"></a>
+  <div class="card-body">
+    <h5 class="card-title"><a href="{{ i.url }}">{{ i.title }}</a></h5>
+    <a href="{{ i.url }}" class="btn btn-danger">Read More</a>
+  </div>
+</div>
+            {% endfor %}
+    </div>
+    </div>
+    <br>
+{% endblock %}
